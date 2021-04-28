@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>eelテスト</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <h2>eelテスト</h2>
+        <div>
+            <table>
+                <tr>
+                    <td class="rowindex">検索ファイル名</td>
+                    <td class="tablerow"><input id="csv_name" type="text"></input><br/></td>
+                </tr>
+                <tr>
+                    <td class="rowindex">出力フォルダパス</td>
+                    <td class="tablerow"><input id="export_dir" type="text" placeholder="オプション"></input><br/></td>
+                </tr>
+                <tr>
+                    <td class="rowindex">検索ワード</td>
+                    <td class="tablerow"><input id="serch_word" type="text"></input></td>
+                    <td class="tablerow"><button id="search" class="rowbutton">検索</button><br/></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <textarea id="result" class="log-view-area"></textarea>
+        </div>
+        <script type="text/javascript" src="./eel.js"></script>
+        <script>
+            search.addEventListener('click', () => {
+                if(csv_name.value == ""){
+                    alert("検索ファイル名を入力してください")
+                }else if(serch_word.value == ""){
+                    alert("検索ワードを入力してください")
+                }else{
+                    eel.kimetsu_search(serch_word.value,csv_name.value,export_dir.value)
+                }
+            })
+
+            eel.expose(view_log_js)
+            function view_log_js(text){
+                result.value += text + "\n"
+            }
+        </script>
+    </body>
+</html>
