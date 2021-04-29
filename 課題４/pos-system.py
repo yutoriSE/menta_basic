@@ -46,6 +46,7 @@ class Order:
                 return False
         return True
 
+    # オーダー処理
     def order(self):
         self.order_timestamp = datetime.datetime.now()
         while True:
@@ -107,7 +108,7 @@ class Order:
 
 def main():
     # マスタ登録
-    item_list = pd.read_csv("data.csv").values
+    item_list = pd.read_csv(ITEM_MASTER_PATH).values
     item_master = []
 
     for il in item_list:
