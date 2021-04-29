@@ -1,6 +1,9 @@
 import datetime
 import pandas as pd
 
+ITEM_MASTER_PATH = 'data.csv'
+RECEIPT_DIR = 'receipt'
+
 # 商品クラス
 
 
@@ -33,7 +36,6 @@ class Order:
         self.order_info = []
 
     def add_item_order(self, order):
-        self.order_timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.item_order_list.append(order)  # orderは二次元リスト
 
     # オーダーされた商品の登録有無をチェック（無ければTrueを返す）
@@ -45,6 +47,7 @@ class Order:
         return True
 
     def order(self):
+        self.order_timestamp = datetime.datetime.now()
         while True:
             order_item_code = input("商品コードを入力してください＞")
             if self.item_code_check(order_item_code):
@@ -86,8 +89,10 @@ class Order:
     # レシート出力
 
     def export_receipt(self):
-        receipt = open('receipt.txt', 'w', encoding='utf-8')
-        receipt.write(f'{self.order_timestamp}\n\n')
+        receipt = open(RECEIPT_DIR+'/'+self.order_timestamp.strftime('%Y%m%d%H%M%S') +
+                       '_receipt.txt', 'w', encoding='utf-8')
+        receipt_timestamp = self.order_timestamp.strftime('%Y/%m/%d %H:%M:%S')
+        receipt.write(f'{receipt_timestamp}\n\n')
         receipt.write('■領収書■\n')
         for info in self.order_info:
             receipt.write(f'{info}\n')
