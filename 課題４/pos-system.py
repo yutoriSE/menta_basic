@@ -40,7 +40,7 @@ class Order:
 
     # オーダーされた商品の登録有無をチェック（無ければTrueを返す）
     def item_code_check(self, item_code):
-        result = True
+
         for item in self.item_master:
             if item_code == item.get_item_code():
                 return False
