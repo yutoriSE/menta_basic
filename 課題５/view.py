@@ -7,12 +7,13 @@ import pandas as pd
 ITEM_MASTER_PATH = 'data.csv'
 RECEIPT_DIR = 'receipt'
 
-app_name = 'html'
+app_name = os.path.join(os.path.dirname(__file__), 'html')
 end_point = "index.html"
 size = (1200, 800)
 
 # マスタ登録
-item_list = pd.read_csv(ITEM_MASTER_PATH).values
+item_list = pd.read_csv(os.path.join(
+    os.path.dirname(__file__), ITEM_MASTER_PATH)).values
 item_master = []
 
 for il in item_list:

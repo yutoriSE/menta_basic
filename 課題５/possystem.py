@@ -1,4 +1,5 @@
 import datetime
+import os
 import eel
 import pandas as pd
 
@@ -83,8 +84,9 @@ class Order:
     # レシート出力
 
     def export_receipt(self):
-        receipt = open(RECEIPT_DIR+'/'+self.order_timestamp.strftime('%Y%m%d%H%M%S') +
-                       '_receipt.txt', 'w', encoding='utf-8')
+        path = os.path.join(os.path.dirname(__file__), RECEIPT_DIR,
+                            self.order_timestamp.strftime('%Y%m%d%H%M%S')+'_receipt.txt')
+        receipt = open(path, 'w', encoding='utf-8')
         receipt_timestamp = self.order_timestamp.strftime('%Y/%m/%d %H:%M:%S')
         receipt.write(f'{receipt_timestamp}\n\n')
         receipt.write('■領収書■\n')
