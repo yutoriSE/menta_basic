@@ -42,5 +42,12 @@ async function chengeTotalAmountText(){
 //おつりをセット
 async function chengeReturnAmountText(){
     let ramount = await eel.get_return_amount()();
-    document.getElementById("returnAmount").innerText = ramount+"円" ;  
+    if (Number(ramount) > 0){
+        document.getElementById("returnAmount").innerText = ramount+"円";
+    }
+}
+
+//ページ遷移
+function link(target) {
+    window.location.href=target;
 }

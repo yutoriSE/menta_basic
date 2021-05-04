@@ -53,4 +53,9 @@ def get_return_amount():
     return order.get_return_amount()
 
 
+@eel.expose
+def get_history():
+    return order.get_history()
+
+
 desktop.start(app_name, end_point, size)

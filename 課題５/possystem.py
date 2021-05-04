@@ -37,6 +37,7 @@ class Order:
         self.order_timestamp = datetime.datetime.now()
         self.order_info = []
         self.return_amount = 0
+        self.history = []
 
     def add_item_order(self, order):
         self.item_order_list.append(order)  # orderは二次元リスト
@@ -84,21 +85,34 @@ class Order:
     # レシート出力
 
     def export_receipt(self):
-        path = os.path.join(os.path.dirname(__file__), RECEIPT_DIR,
-                            self.order_timestamp.strftime('%Y%m%d%H%M%S')+'_receipt.txt')
-        receipt = open(path, 'w', encoding='utf-8')
-        receipt_timestamp = self.order_timestamp.strftime('%Y/%m/%d %H:%M:%S')
-        receipt.write(f'{receipt_timestamp}\n\n')
-        receipt.write('■領収書■\n')
-        for info in self.order_info:
-            receipt.write(f'{info}\n')
-        receipt.write(f'\n総額：{self.order_toral_amount}円\n')
-        receipt.write(f'お支払い金額：{self.payment_amount}円\n')
-        receipt.write(f'おつり：{self.payment_amount-self.order_toral_amount}円')
-        receipt.close()
+        if self.return_amount > 0:
+            path = os.path.join(os.path.dirname(__file__), RECEIPT_DIR,
+                                self.order_timestamp.strftime('%Y%m%d%H%M%S')+'_receipt.txt')
+
+            # レシート出力
+            receipt = open(path, 'w', encoding='utf-8')
+            receipt_timestamp = self.order_timestamp.strftime(
+                '%Y/%m/%d %H:%M:%S')
+            receipt.write(f'{receipt_timestamp}\n\n')
+            receipt.write('■領収書■\n')
+            for info in self.order_info:
+                receipt.write(f'{info}\n')
+            receipt.write(f'\n総額：{self.order_toral_amount}円\n')
+            receipt.write(f'お支払い金額：{self.payment_amount}円\n')
+            receipt.write(
+                f'おつり：{self.payment_amount-self.order_toral_amount}円')
+            receipt.close()
+
+            # 販売履歴追加
+            self.history.append(self.order_timestamp.strftime('%Y%m%d%H%M%S')+'  総額：'+str(
+                self.order_toral_amount)+'  お支払い金額：'+str(self.payment_amount)+'  おつり：'+str(self.return_amount))
 
     def get_order_toral_amount(self):
         return str(self.order_toral_amount)
 
     def get_return_amount(self):
         return str(self.return_amount)
+
+    def get_history(self):
+        print(self.history[len(self.history)-1])
+        return self.hisotry
