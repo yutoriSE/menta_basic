@@ -11,6 +11,9 @@ app_name = os.path.join(os.path.dirname(__file__), 'html')
 end_point = "index.html"
 size = (1200, 800)
 
+# オーダー履歴
+histories = []
+
 # マスタ登録
 item_list = pd.read_csv(os.path.join(
     os.path.dirname(__file__), ITEM_MASTER_PATH)).values
@@ -22,10 +25,10 @@ for il in item_list:
 # オーダー開始
 order = ps.Order(item_master)
 
-# オーダー追加
+# オーダー追加（商品コードエラーならTrueが返る）
 @ eel.expose
 def add_order(item_code, item_num):
-    order.add_item_order([item_code, item_num])
+    return order.add_item_order([item_code, item_num])
 
 # オーダー情報表示
 @ eel.expose
@@ -40,7 +43,11 @@ def calc_payment(amount):
 # レシート出力
 @ eel.expose
 def export_receipt():
+    global order
     order.export_receipt()
+    histories.append(order.get_history())  # 販売履歴追加
+    order = ps.Order(item_master)  # オーダーリセット
+
 
 # 総額を返す
 @ eel.expose
@@ -52,10 +59,10 @@ def get_total_amount():
 def get_return_amount():
     return order.get_return_amount()
 
-
+# 履歴データ取得
 @eel.expose
 def get_history():
-    return order.get_history()
+    return histories
 
 
 desktop.start(app_name, end_point, size)

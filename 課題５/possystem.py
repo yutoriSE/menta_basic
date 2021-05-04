@@ -36,18 +36,25 @@ class Order:
         self.payment_amount = 0
         self.order_timestamp = datetime.datetime.now()
         self.order_info = []
-        self.return_amount = 0
-        self.history = []
+        self.return_amount = -1
+        self.history = ""
 
-    def add_item_order(self, order):
-        self.item_order_list.append(order)  # orderは二次元リスト
+        # オーダーされた商品の登録有無をチェック（無ければTrueを返す）
 
-    # オーダーされた商品の登録有無をチェック（無ければTrueを返す）
+    # コードが存在しなければTrueを返す
     def item_code_check(self, item_code):
         for item in self.item_master:
             if item_code == item.get_item_code():
                 return False
         return True
+
+    # チェックエラーならTrue
+    def add_item_order(self, order):
+        if self.item_code_check(order[0]):
+            return True
+        else:
+            self.item_order_list.append(order)  # orderは二次元リスト
+            return False
 
     def view_item_list(self):
         for item in self.item_order_list:
@@ -85,7 +92,7 @@ class Order:
     # レシート出力
 
     def export_receipt(self):
-        if self.return_amount > 0:
+        if self.return_amount >= 0:
             path = os.path.join(os.path.dirname(__file__), RECEIPT_DIR,
                                 self.order_timestamp.strftime('%Y%m%d%H%M%S')+'_receipt.txt')
 
@@ -104,8 +111,9 @@ class Order:
             receipt.close()
 
             # 販売履歴追加
-            self.history.append(self.order_timestamp.strftime('%Y%m%d%H%M%S')+'  総額：'+str(
-                self.order_toral_amount)+'  お支払い金額：'+str(self.payment_amount)+'  おつり：'+str(self.return_amount))
+            self.history = self.order_timestamp.strftime('%Y%m%d%H%M%S')+'   総額：'+str(
+                self.order_toral_amount)+'   お支払い金額：'+str(self.payment_amount)+'   おつり：'+str(self.return_amount)
+            print(self.history)
 
     def get_order_toral_amount(self):
         return str(self.order_toral_amount)
@@ -114,5 +122,4 @@ class Order:
         return str(self.return_amount)
 
     def get_history(self):
-        print(self.history[len(self.history)-1])
-        return self.hisotry
+        return self.history
