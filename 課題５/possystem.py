@@ -93,8 +93,8 @@ class Order:
 
     def export_receipt(self):
         if self.return_amount >= 0:
-            path = os.path.join(os.path.dirname(__file__), RECEIPT_DIR,
-                                self.order_timestamp.strftime('%Y%m%d%H%M%S')+'_receipt.txt')
+            path = os.path.join(RECEIPT_DIR, self.order_timestamp.strftime(
+                '%Y%m%d%H%M%S')+'_receipt.txt')
 
             # レシート出力
             receipt = open(path, 'w', encoding='utf-8')
