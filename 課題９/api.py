@@ -66,7 +66,7 @@ def main():
 
             print("ツイートしました。")
 
-        else:
+        elif not result[0]:
             # 在庫が亡くなったらツイートを許可する
             tweet_flag = True
             print('在庫はありません')
