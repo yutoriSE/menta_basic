@@ -28,6 +28,9 @@ def set_driver(test_flag):
     return webdriver.Chrome(ChromeDriverManager().install(), options=option)
 
 
+# カート追加ボタンが存在すればTrueを返す
+
+
 def exists_stock(url):
     driver = set_driver(test_flag=True)
     driver.get(url)
@@ -67,7 +70,7 @@ def main():
             print("ツイートしました。")
 
         elif not result[0]:
-            # 在庫が亡くなったらツイートを許可する
+            # 在庫が無くなったらツイートを許可する
             tweet_flag = True
             print('在庫はありません')
 
